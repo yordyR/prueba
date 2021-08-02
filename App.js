@@ -1,21 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Navigation from './navigations/Naigations';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  gql
+} from "@apollo/client";
+
+
+const client = new ApolloClient({
+  uri: 'https://jr-master-test.dev.elenas.la/gql/',
+  headers: {
+    authorization: localStorage.getItem("token") || ""
+  },
+  cache: new InMemoryCache()
+});
+
+
+// client
+//   .query({
+//     query: gql`
+//         query clientsSearch {
+//           clientsSearch{
+//               currentPage
+//           }
+//       }
+//     `
+//   })
+//   .then(result => console.log(result));
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ApolloProvider client={client}>
+      <Navigation />
+    </ApolloProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
